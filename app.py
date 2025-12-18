@@ -17,6 +17,8 @@ from nltk.tokenize import RegexpTokenizer
 # File parsing
 import pdfplumber
 import docx2txt
+import subprocess
+import sys
 
 # -------------------------
 # Ensure NLTK data is available
@@ -34,7 +36,13 @@ ensure_nltk_data()
 
 # -------------------------
 # Load spaCy model safely
-nlp = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    subprocess.check_call(
+        [sys.executable, "-m", "spacy", "download", "en_core_web_sm"]
+    )
+    nlp = spacy.load("en_core_web_sm")
 
 
 # Precompute stopwords
@@ -204,5 +212,6 @@ if results:
         st.table(df[df["Predicted Profile"] == option])
 else:
     st.info("Upload one or more resumes to see predictions.")
+
 
 
