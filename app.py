@@ -34,11 +34,8 @@ ensure_nltk_data()
 
 # -------------------------
 # Load spaCy model safely
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    st.error("spaCy model 'en_core_web_sm' not found. Please run:\n\n```bash\npython -m spacy download en_core_web_sm\n```")
-    st.stop()
+nlp = spacy.load("en_core_web_sm")
+
 
 # Precompute stopwords
 STOPWORDS = set(nltk.corpus.stopwords.words("english"))
@@ -207,4 +204,5 @@ if results:
         st.table(df[df["Predicted Profile"] == option])
 else:
     st.info("Upload one or more resumes to see predictions.")
+
 
